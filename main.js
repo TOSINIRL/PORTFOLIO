@@ -41,111 +41,121 @@
         initTheme();
     }
 
-    // 0.1 Mobile Menu Logic
+    // 0. Mobile Menu Logic
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileNav = document.getElementById('mobileNav');
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
 
     if (mobileMenuBtn && mobileNav) {
         mobileMenuBtn.addEventListener('click', () => {
-            const isOpen = mobileNav.classList.toggle('active');
             mobileMenuBtn.classList.toggle('active');
-            
-            // Prevent scrolling when menu is open
-            document.body.style.overflow = isOpen ? 'hidden' : '';
-
-            // Animation for links
-            if (isOpen) {
-                gsap.from('.mobile-nav-links li', {
-                    y: 30,
-                    opacity: 0,
-                    stagger: 0.1,
-                    duration: 0.5,
-                    ease: "power2.out",
-                    delay: 0.2
-                });
-            }
+            mobileNav.classList.toggle('active');
+            body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : 'auto';
         });
 
-        // Close menu when link is clicked
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
-                mobileNav.classList.remove('active');
                 mobileMenuBtn.classList.remove('active');
-                document.body.style.overflow = '';
+                mobileNav.classList.remove('active');
+                body.style.overflow = 'auto';
             });
         });
     }
 
-
-
-
-    // 0. Mob Psycho Preloader & Site Reveal (Restored)
-    const initPreloader = () => {
+    // 0. Mob Psycho Preloader & Site Reveal
+    window.addEventListener('load', () => {
         const loadCount = document.getElementById('load-count');
         const preloader = document.getElementById('preloader');
+        const counterWrap = document.querySelector('.mob-counter');
+        const aura = document.querySelector('.shigeo-aura');
+        const status = document.querySelector('.mob-status');
         
-        if (!preloader) return;
+        // Check if we already showed the preloader this session
+        if (sessionStorage.getItem('preloader_shown') === 'true') {
+            preloader.style.display = 'none';
+            gsap.set(['header', 'main'], { opacity: 1, y: 0 });
+            gsap.set('.watermark-text', { opacity: 1, y: 0 });
+            return;
+        }
 
-        // Force preloader every time for verification (removed sessionStorage check)
-        
-        document.body.classList.add('js-loading');
         const tl = gsap.timeline();
-        let progressVal = { value: 0 };
+        let progress = { value: 0 };
 
         // Animate counter
-        tl.to(progressVal, {
+        tl.to(progress, {
             value: 100,
             duration: 3,
             ease: "power2.inOut",
             onUpdate: () => {
-                const rounded = Math.floor(progressVal.value);
-                if (loadCount) {
-                    loadCount.textContent = rounded;
-                    // Mob Intensity Transitions
-                    if (rounded >= 90) preloader.classList.add('mob-intensity-high');
-                    if (rounded >= 99) loadCount.classList.add('glitch');
+                const rounded = Math.floor(progress.value);
+                loadCount.textContent = rounded < 10 ? `0${rounded}` : rounded;
+                
+                // Intensity effects as we approach 100%
+                if (rounded > 60) {
+                    gsap.set(aura, { opacity: (rounded - 60) / 40 });
+                    gsap.set(counterWrap, { 
+                        x: gsap.utils.random(-2, 2), 
+                        y: gsap.utils.random(-2, 2) 
+                    });
+                }
+                
+                if (rounded > 90) {
+                    counterWrap.classList.add('glitch');
+                    counterWrap.setAttribute('data-text', rounded);
+                    status.textContent = "CRITICAL LIMIT REACHED";
+                    status.style.color = "#ff3333";
                 }
             }
+        });
+
+        // Final Explosion Reveal
+        tl.to(counterWrap, { 
+            scale: 2, 
+            opacity: 0, 
+            duration: 0.5, 
+            ease: "power4.in" 
         })
-        .to('.shigeo-aura', {
-            opacity: 1,
-            duration: 1.5,
-            ease: "power2.in"
-        }, "-=1.5")
-        // Pause for impact at 100%
-        .to({}, { duration: 0.8 }) 
-        // Dismiss Preloader
         .to(preloader, {
-            clipPath: 'circle(0% at 50% 50%)',
-            duration: 1.2,
-            ease: "expo.inOut",
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.inOut",
             onComplete: () => {
                 preloader.style.display = 'none';
-                preloader.style.zIndex = '-1'; 
-                document.body.classList.remove('js-loading');
                 sessionStorage.setItem('preloader_shown', 'true');
-                gsap.set(['header', 'main'], { opacity: 1, visibility: 'visible', pointerEvents: 'all' });
             }
-        })
+        }, "-=0.2")
         // Reveal site content
-        .to(['header', 'main'], {
-            opacity: 1,
-            y: 0,
-            duration: 1,
+        .to(['header', 'main'], { 
+            opacity: 1, 
+            y: 0, 
+            duration: 1.2, 
             stagger: 0.2,
-            ease: "power4.out"
+            ease: "expo.out" 
         }, "-=0.5")
-        .to('.watermark-text', {
-            opacity: 0.03,
-            y: 0,
+        .from('.watermark-text', {
+            opacity: 0,
+            y: 100,
+            stagger: 0.2,
             duration: 1.5,
-            stagger: 0.3
+            ease: "power4.out"
         }, "-=1");
-    };
 
-    // Initialize Preloader
-    initPreloader();
+        // Failsafe: Reveal anyway if load takes too long
+        setTimeout(() => {
+            if (preloader.style.display !== 'none') {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    gsap.to(['header', 'main'], { opacity: 1, y: 0, duration: 1 });
+                }, 800);
+            }
+        }, 5000);
+    });
+
+    // Ensure ScrollTrigger is registered with GSAP before use
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+    }
 
     // 1. Load YouTube IFrame API
     const tag = document.createElement('script');
@@ -365,9 +375,43 @@
         });
     };
 
+    // 3. Timeline Animation logic
+    const initTimelineAnimation = () => {
+        const timelineItems = gsap.utils.toArray('.timeline-item');
+        if (timelineItems.length === 0) return;
+
+        // Fade + Scale animation
+        gsap.from(timelineItems, {
+            opacity: 0,
+            scale: 0.85,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'back.out(1.2)',
+            scrollTrigger: {
+                trigger: '.project-timeline',
+                start: 'top 75%',
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // Add timeline dot pulse animation
+        gsap.from('.timeline-dot', {
+            scale: 0,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.2,
+            ease: 'back.out(1.2)',
+            scrollTrigger: {
+                trigger: '.project-timeline',
+                start: 'top 75%'
+            }
+        });
+    };
+
     // --- Effects ---
     const initEffects = () => {
         initSocialStats();
+        initTimelineAnimation();
 
         if (document.querySelector('.mission-reveal')) {
             gsap.from('.mission-reveal', {
@@ -391,248 +435,9 @@
                 scrub: true
             }
         });
-
-        // Case Studies Grid Reveal
-        const projectCards = gsap.utils.toArray('.project-card');
-        if (projectCards.length > 0) {
-            gsap.from(projectCards, {
-                opacity: 0,
-                y: 60,
-                scale: 0.95,
-                duration: 0.8,
-                stagger: 0.15,
-                ease: 'back.out(1.2)',
-                scrollTrigger: {
-                    trigger: '.project-grid',
-                    start: 'top 85%',
-                    toggleActions: "play none none reverse"
-                }
-            });
-        }
-
-        // About Section Reveal
-        const aboutTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.about',
-                start: 'top 80%',
-                toggleActions: "play none none reverse"
-            }
-        });
-
-        aboutTl.from('.about-content-left', {
-            x: -50,
-            opacity: 0,
-            duration: 1,
-            ease: "power4.out"
-        })
-        .from('.about-content-right', {
-            x: 50,
-            opacity: 0,
-            duration: 1,
-            ease: "power4.out"
-        }, "-=0.8");
     };
-
-    // 3. Grid / List View Toggle Logic
-    const initViewToggle = () => {
-        const gridViewBtn = document.getElementById('gridViewBtn');
-        const listViewBtn = document.getElementById('listViewBtn');
-        const projectGrid = document.querySelector('.project-grid');
-        const projectCards = gsap.utils.toArray('.project-card');
-
-        if (!gridViewBtn || !listViewBtn || !projectGrid) return;
-
-        const setView = (view) => {
-            const isList = view === 'list';
-            if (projectGrid.classList.contains('list-view') === isList) return;
-            
-            // UI Sync
-            gridViewBtn.classList.toggle('active', !isList);
-            listViewBtn.classList.toggle('active', isList);
-
-            // High-Performance Animation
-            const tl = gsap.timeline();
-
-            tl.to(projectCards, {
-                opacity: 0,
-                scale: 0.95,
-                duration: 0.2,
-                stagger: 0.02,
-                ease: "power2.in",
-                force3D: true // Force GPU acceleration
-            })
-            .call(() => {
-                projectGrid.classList.toggle('list-view', isList);
-            })
-            .to(projectCards, {
-                opacity: 1,
-                scale: 1,
-                duration: 0.4,
-                stagger: 0.03,
-                ease: "back.out(1.2)",
-                force3D: true
-            });
-
-            localStorage.setItem('project_view', view);
-        };
-
-        gridViewBtn.addEventListener('click', () => setView('grid'));
-        listViewBtn.addEventListener('click', () => setView('list'));
-
-        // Initialize from storage
-        const savedView = localStorage.getItem('project_view');
-        if (savedView === 'list') {
-            projectGrid.classList.add('list-view');
-            gridViewBtn.classList.remove('active');
-            listViewBtn.classList.add('active');
-        }
-    };
-
-    // 4. ECOSYSTEM FEATURES
-    const initEcosystem = () => {
-        // Agentic Log Simulator
-        const logContainer = document.getElementById('agenticLog');
-        const logs = [
-            'Analyzing viewport dynamics...',
-            'Optimizing luxury delivery paths...',
-            'Agent Tosin: Status Nominal.',
-            'Executing logic-driven design...',
-            'Syncing with AI ecosystem...',
-            'Bespoke experience initiated.',
-            'Neutralizing UI friction points...',
-            'Aura synchronization: 100%',
-            'Mastering agentic architecture...'
-        ];
-
-        let logIndex = 0;
-        const addLog = () => {
-            if (!logContainer) return;
-            const line = document.createElement('div');
-            line.className = 'log-line';
-            line.innerHTML = `> ${logs[logIndex]}`;
-            logContainer.appendChild(line);
-            
-            // Auto-scroll and maintain count
-            if (logContainer.children.length > 5) {
-                logContainer.removeChild(logContainer.firstChild);
-            }
-            
-            logIndex = (logIndex + 1) % logs.length;
-            setTimeout(addLog, Math.random() * 2000 + 1500);
-        };
-        addLog();
-
-        // Interactive Logic Orb
-        const orb = document.getElementById('logicOrb');
-        if (orb) {
-            document.addEventListener('mousemove', (e) => {
-                const x = (e.clientX - window.innerWidth / 2) / 25;
-                const y = (e.clientY - window.innerHeight / 2) / 25;
-                gsap.to(orb, {
-                    x: x,
-                    y: y,
-                    duration: 1.2,
-                    ease: "power2.out"
-                });
-            });
-        }
-
-        // Magnetic Social Buttons (Pills and Hero Quick Links)
-        const socialPills = document.querySelectorAll('.social-pill, .hero-social-quick a');
-        socialPills.forEach(pill => {
-            pill.addEventListener('mousemove', (e) => {
-                const rect = pill.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                gsap.to(pill, {
-                    x: x * 0.3,
-                    y: y * 0.3,
-                    duration: 0.4,
-                    ease: "power2.out"
-                });
-                
-                const icon = pill.querySelector('i');
-                gsap.to(icon, {
-                    x: x * 0.5,
-                    y: y * 0.5,
-                    duration: 0.4,
-                    ease: "power2.out"
-                });
-            });
-
-            pill.addEventListener('mouseleave', () => {
-                gsap.to(pill, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.6,
-                    ease: "elastic.out(1, 0.3)"
-                });
-                const icon = pill.querySelector('i');
-                gsap.to(icon, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.6,
-                    ease: "elastic.out(1, 0.3)"
-                });
-            });
-        });
-    };
-
-    // 0. SYSTEM CLOCK & GLOBAL NODES
-    const updateClock = () => {
-        const headerClock = document.getElementById('headerTime');
-        const heroClock = document.getElementById('heroClock');
-        const ldnClock = document.getElementById('clockLDN');
-        const tkyClock = document.getElementById('clockTKY');
-        const yyzClock = document.getElementById('clockYYZ');
-        
-        const now = new Date();
-        
-        // Helper for formatted time
-        const getFormattedTime = (date, timezoneOffset) => {
-            // Adjust for timezone
-            const localDate = new Date(date.toLocaleString('en-US', { timeZone: timezoneOffset }));
-            let h = localDate.getHours();
-            const m = String(localDate.getMinutes()).padStart(2, '0');
-            const s = String(localDate.getSeconds()).padStart(2, '0');
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12 || 12;
-            return `${String(h).padStart(2, '0')}:${m}:${s} ${ampm}`;
-        };
-
-        // Toronto (Local)
-        const timeStr = getFormattedTime(now, 'America/Toronto');
-        if (headerClock) headerClock.textContent = timeStr;
-        if (heroClock) heroClock.textContent = timeStr;
-        if (yyzClock) yyzClock.textContent = timeStr;
-
-        // London
-        if (ldnClock) ldnClock.textContent = getFormattedTime(now, 'Europe/London');
-        
-        // Tokyo
-        if (tkyClock) tkyClock.textContent = getFormattedTime(now, 'Asia/Tokyo');
-
-        setTimeout(updateClock, 1000);
-    };
-    updateClock();
-
-    // 0. Status Dot Pulsing
-    if (document.querySelector('.status-dot')) {
-        gsap.to('.status-dot', {
-            opacity: 0.2,
-            duration: 1,
-            repeat: -1,
-            yoyo: true,
-            ease: "power2.inOut"
-        });
-    }
 
     // Ensure GSAP plugins are ready
-    setTimeout(() => {
-        initEffects();
-        initViewToggle();
-        initEcosystem();
-    }, 500);
+    setTimeout(initEffects, 500);
 
 })();
