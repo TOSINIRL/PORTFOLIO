@@ -3916,3 +3916,24 @@ body.light-theme .discord-logo-light {
         font-size: 3.5rem;
     }
 }
+
+/* FINAL EMERGENCY FIX FOR MOBILE TOGGLE */
+@media (max-width: 850px) {
+    .social-header-links, .header-status {
+        display: none !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .header-right {
+        gap: 5px !important;
+        margin-right: 0 !important;
+    }
+    
+    .theme-switch {
+        margin-right: 2px !important;
+    }
+}
