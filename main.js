@@ -424,50 +424,7 @@
 
 
 
-        // Magnetic Social Buttons (Pills and Hero Quick Links)
-        const socialPills = document.querySelectorAll('.social-pill, .hero-social-quick a');
-        socialPills.forEach(pill => {
-            pill.addEventListener('mousemove', (e) => {
-                const rect = pill.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                gsap.to(pill, {
-                    x: x * 0.3,
-                    y: y * 0.3,
-                    duration: 0.4,
-                    ease: "power2.out"
-                });
-                
-                const icon = pill.querySelector('i');
-                if (icon) {
-                    gsap.to(icon, {
-                        x: x * 0.5,
-                        y: y * 0.5,
-                        duration: 0.4,
-                        ease: "power2.out"
-                    });
-                }
-            });
-
-            pill.addEventListener('mouseleave', () => {
-                gsap.to(pill, {
-                    x: 0,
-                    y: 0,
-                    duration: 0.6,
-                    ease: "elastic.out(1, 0.3)"
-                });
-                const icon = pill.querySelector('i');
-                if (icon) {
-                    gsap.to(icon, {
-                        x: 0,
-                        y: 0,
-                        duration: 0.6,
-                        ease: "elastic.out(1, 0.3)"
-                    });
-                }
-            });
-        });
+        // Magnetic Social Buttons removed as requested
 
 
     };
