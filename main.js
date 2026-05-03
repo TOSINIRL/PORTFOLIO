@@ -247,129 +247,10 @@
             gsap.to(img, { opacity: 1, duration: 0.2 });
             gsap.to(card, { scale: 1, duration: 0.4 });
         });
-    }
-
-    // 2. Social Stats Real-Time Logic
+        // 2. Social Stats Logic (Removed)
     const initSocialStats = () => {
-        const subDisplay = document.getElementById('sub-count');
-        const discordDisplay = document.getElementById('discord-count');
-        
-        if (!subDisplay || !discordDisplay) return;
-
-        // Configuration
-        const CONFIG = {
-            discordInvite: 'vW7DnNsf74',
-            youtubeChannelId: 'UCck1kagNTkAlriBIRE8NPog',
-            youtubeApiKey: 'AIzaSyDI7ia--llieRsL_TaPVw5p0A1-B9UdHrE',
-            refreshInterval: 60000 // 1 minute
-        };
-
-        const state = {
-            subs: 1590, // Fallback
-            discord: 5   // Fallback
-        };
-
-        const animateValue = (el, start, end, suffix = "") => {
-            let obj = { val: start };
-            gsap.to(obj, {
-                val: end,
-                duration: 1.5,
-                ease: "power2.out",
-                onUpdate: () => {
-                    const val = Math.floor(obj.val);
-                    if (suffix === "K" && val >= 1000) {
-                        el.textContent = (val / 1000).toFixed(2) + "K";
-                    } else if (suffix === "K") {
-                        el.textContent = val.toLocaleString();
-                    } else {
-                        el.textContent = val.toLocaleString();
-                    }
-                }
-            });
-
-            // Pulse effect on update
-            const dot = el.previousElementSibling;
-            if (dot && dot.classList.contains('pulse-dot')) {
-                gsap.to(dot, { 
-                    scale: 1.5, 
-                    backgroundColor: "#00ff88", 
-                    duration: 0.3, 
-                    yoyo: true, 
-                    repeat: 1 
-                });
-            }
-        };
-
-        const fetchStats = async () => {
-            try {
-                // 1. Fetch Discord Data (Keyless)
-                const discordRes = await fetch(`https://discord.com/api/v9/invites/${CONFIG.discordInvite}?with_counts=true`);
-                const discordData = await discordRes.json();
-                if (discordData.approximate_member_count !== undefined) {
-                    const newDiscord = discordData.approximate_member_count;
-                    if (newDiscord !== state.discord) {
-                        animateValue(discordDisplay, state.discord, newDiscord);
-                        state.discord = newDiscord;
-                    }
-                }
-
-                // 2. Fetch YouTube Data (Requires Key)
-                if (CONFIG.youtubeApiKey) {
-                    const ytRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CONFIG.youtubeChannelId}&key=${CONFIG.youtubeApiKey}`);
-                    const ytData = await ytRes.json();
-                    if (ytData.items && ytData.items[0]) {
-                        const newSubs = parseInt(ytData.items[0].statistics.subscriberCount);
-                        if (newSubs !== state.subs) {
-                            animateValue(subDisplay, state.subs, newSubs, "K");
-                            state.subs = newSubs;
-                        }
-                    }
-                } else {
-                    // Slight variation to "feel" live if no key yet (simulated logic but keeping current state)
-                    // Removing simulation to be honest, but initializing once
-                }
-            } catch (err) {
-                console.warn("Failed to fetch live stats:", err);
-            }
-        };
-
-        // Initial fetch
-        fetchStats();
-
-        // Entry Animation
-        animateValue(subDisplay, 0, state.subs, "K");
-        animateValue(discordDisplay, 0, state.discord);
-
-        // Auto-refresh poll
-        setInterval(fetchStats, CONFIG.refreshInterval);
-
-        // Tab Switching Logic
-        const tabs = document.querySelectorAll('.yt-tab');
-        const videosContent = document.getElementById('videos-content');
-        const communityContent = document.getElementById('community-content');
-        const featuredVideo = document.querySelector('.hero-video-wrap');
-        const interactiveHeader = document.querySelector('.more-videos-header');
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-
-                const target = tab.getAttribute('data-tab');
-                if (target === 'videos') {
-                    videosContent.style.display = 'grid';
-                    if (featuredVideo) featuredVideo.style.display = 'block';
-                    if (interactiveHeader) interactiveHeader.style.display = 'block';
-                    communityContent.style.display = 'none';
-                } else {
-                    videosContent.style.display = 'none';
-                    if (featuredVideo) featuredVideo.style.display = 'none';
-                    if (interactiveHeader) interactiveHeader.style.display = 'none';
-                    communityContent.style.display = 'block';
-                }
-            });
-        });
-    };
+        // Stats removed as requested
+    }; };
 
     // 3. SLEEK REVEAL EFFECTS
     const initEffects = () => {
@@ -588,37 +469,7 @@
             });
         });
 
-        // 3D Tilt for Discord Button
-        const discordBtn = document.querySelector('.discord-join-btn');
-        if (discordBtn) {
-            discordBtn.addEventListener('mousemove', (e) => {
-                const rect = discordBtn.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
-                
-                gsap.to(discordBtn, {
-                    rotateX: rotateX,
-                    rotateY: rotateY,
-                    duration: 0.5,
-                    ease: "power2.out",
-                    transformPerspective: 1000
-                });
-            });
 
-            discordBtn.addEventListener('mouseleave', () => {
-                gsap.to(discordBtn, {
-                    rotateX: 0,
-                    rotateY: 0,
-                    duration: 0.8,
-                    ease: "elastic.out(1, 0.3)"
-                });
-            });
-        }
     };
 
     // 0. SYSTEM CLOCK & GLOBAL NODES
