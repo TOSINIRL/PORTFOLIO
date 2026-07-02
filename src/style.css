@@ -3878,6 +3878,102 @@ body.light-theme .discord-logo-light {
     background: var(--bg-color);
 }
 
+/* Glass Icons side-by-side row */
+.social-glass-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 60px;
+    width: 100%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.social-glass-item {
+    flex: 1;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.social-glass-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.social-glass-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+}
+
+.social-glass-card .glass-icon {
+    width: auto;
+    height: 80%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.social-glass-card:hover .glass-icon {
+    transform: scale(1.08);
+}
+
+.social-glass-card.discord-card:hover {
+    border-color: rgba(88, 101, 242, 0.4);
+    box-shadow: 0 10px 30px rgba(88, 101, 242, 0.15);
+}
+
+.social-glass-card.youtube-card:hover {
+    border-color: rgba(255, 0, 0, 0.4);
+    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.15);
+}
+
+/* Glow effects */
+.discord-glow {
+    position: relative;
+}
+.discord-glow::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(88, 101, 242, 0.15) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.youtube-glow {
+    position: relative;
+}
+.youtube-glow::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.15) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
 .discord-premium-hub {
     display: flex;
     align-items: center;
@@ -4061,6 +4157,14 @@ body.light-theme .discord-logo-light {
 
 /* Responsive */
 @media (max-width: 992px) {
+    .social-glass-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+    }
+    .social-glass-item {
+        max-width: 480px;
+    }
     .discord-premium-hub {
         flex-direction: column;
         text-align: center;
