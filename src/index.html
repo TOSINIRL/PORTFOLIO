@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="assets/images/tc_media_hub_logo.png?v=23">
     <link rel="apple-touch-icon" href="assets/images/tc_media_hub_logo.png?v=24">
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;900&family=Gochi+Hand&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=212">
+    <link rel="stylesheet" href="style.css?v=213">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -302,24 +302,21 @@
         <!-- Community Hub: Discord & YouTube -->
         <section id="community" class="community-hub reveal-on-scroll">
             <div class="container">
-                <!-- Side-by-Side Glass Icons (Same size as video thumbnails) -->
-                <div class="social-glass-grid">
-                    <div class="social-glass-item">
-                        <h2 class="social-glass-title">JOIN THE DISCORD</h2>
-                        <a href="https://discord.gg/CVVjUz86S9" target="_blank" class="social-glass-card discord-card discord-glow">
-                            <img src="assets/images/discord_glass_v2.png" alt="Discord Glass Icon" class="glass-icon">
-                        </a>
-                    </div>
-                    <div class="social-glass-item">
-                        <h2 class="social-glass-title">SUBSCRIBE TO YOUTUBE</h2>
-                        <a href="https://youtube.com/@tosinirl?sub_confirmation=1" target="_blank" class="social-glass-card youtube-card youtube-glow">
-                            <img src="assets/images/youtube_glass_v2.png" alt="YouTube Glass Icon" class="glass-icon">
-                        </a>
-                    </div>
+                <div class="community-socials-row">
+                    <a href="https://discord.gg/CVVjUz86S9" target="_blank" class="community-social-card discord-pill">
+                        <i class="fab fa-discord"></i>
+                        <span>Discord</span>
+                    </a>
+                    <a href="https://youtube.com/@tosinirl?sub_confirmation=1" target="_blank" class="community-social-card youtube-pill">
+                        <i class="fab fa-youtube"></i>
+                        <span>YouTube</span>
+                    </a>
                 </div>
 
-                <!-- YouTube Grid containing video mockups -->
                 <div class="youtube-premium-hub">
+                    <div class="youtube-header">
+                        <h2>SUBSCRIBE TO YOUTUBE!</h2>
+                    </div>
                     <div class="youtube-grid">
                         <a href="https://youtu.be/UNarPhkqDD0?si=cCpeT8Qt1-wawWYt" target="_blank" class="video-mockup">
                             <img src="https://i.ytimg.com/vi/UNarPhkqDD0/maxresdefault.jpg" alt="Monkey App Rizz Tutorial" class="thumb-img">
