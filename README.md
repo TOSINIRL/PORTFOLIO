@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # IT Chic Travels v2.0 - Premium Redesign
 
 ![IT Chic Travels](https://img.shields.io/badge/Status-Ready%20for%20Implementation-success)
@@ -168,174 +169,59 @@ Place in `assets/images/`:
 # Using online tool: https://cloudconvert.com/jpg-to-webp
 ```
 
-## 🛠️ Customization
+# Slutify — ScenePacks (prototype)
 
-### Colors
-Edit CSS variables in `css/style.css`:
-```css
-:root {
-    --color-primary: hsl(200, 85%, 45%);    /* Blue */
-    --color-accent: hsl(12, 85%, 62%);      /* Coral */
-    /* Modify to match your brand */
-}
+This repository contains a small static prototype implementing the ScenePacks layout and interactions used in the Slutify marketing prototype:
+
+- Banner/header with clickable CTAs
+- Clickable category chips
+- ScenePack tabs and a cover grid
+- Download buttons under each pack cover
+- A waitlist request modal
+
+## Preview locally
+
+Open `irlmedia-site/index.html` directly, or run a simple server:
+
+```bash
+cd irlmedia-site
+python3 -m http.server 8000
 ```
 
-### Typography
-Change fonts in `index.html` (Google Fonts link) and `css/style.css`:
-```css
-:root {
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
-}
+Then visit `http://localhost:8000`.
+
+## Replace assets
+
+Add your own banner images and cover art to `irlmedia-site/assets/` and update the filenames in `index.html`.
+
+## Push to GitHub
+
+If you want to publish this branch to your GitHub remote:
+
+```bash
+cd irlmedia-site
+git status
+git add .
+git commit -m "Update ScenePacks prototype layout"
+git push
 ```
 
-### Content
-Edit text directly in `index.html`:
-- Hero title and subtitle
-- Service descriptions
-- Trip details and dates
-- Testimonials
-- Footer information
+This repository may already have a branch pushed as `irlmedia-prototype-final`.
 
-## 📱 Responsive Breakpoints
+## Next steps
 
-- **Desktop**: 1024px and above
-- **Tablet**: 768px - 1023px
-- **Mobile**: Below 768px
-
-All layouts automatically adapt to screen size.
-
-## ⚡ Performance Tips
-
-1. **Optimize Videos**:
-   - Use H.264 codec
-   - Keep file size under 5MB per video
-   - Consider poster images for mobile
-
-2. **Compress Images**:
-   - Use WebP format with JPEG fallback
-   - Compress to 80% quality
-   - Lazy load below-the-fold images
-
-3. **Minify Assets** (for production):
-   ```bash
-   # CSS minification
-   npx clean-css-cli -o style.min.css style.css
-   
-   # JS minification
-   npx terser main.js -o main.min.js
-   ```
-
-## 🎨 Design Features Explained
-
-### Glassmorphism
-The frosted glass effect is achieved using:
-```css
-backdrop-filter: blur(20px) saturate(180%);
-background: rgba(255, 255, 255, 0.08);
-border: 1px solid rgba(255, 255, 255, 0.18);
-```
-
-### Liquid Motion Buttons
-Hover effects use expanding circular gradients:
-- Initial: Blue gradient background
-- Hover: Coral gradient expands from cursor position
-- Transition: 600ms smooth animation
-
-### Kinetic Typography
-The hero title reacts to cursor movement:
-- Each letter tracks cursor proximity
-- Movement within 200px radius
-- Smooth requestAnimationFrame updates
-
-## 🐛 Troubleshooting
-
-### Videos Not Playing
-- Ensure you're using a local server (not `file://`)
-- Check video format is MP4 with H.264 codec
-- Verify file paths are correct
-
-### Animations Not Working
-- Check browser console for JavaScript errors
-- Ensure GSAP CDN is loading (check network tab)
-- Verify ScrollTrigger plugin is included
-
-### Glassmorphism Not Showing
-- Check browser support for `backdrop-filter`
-- Safari requires `-webkit-backdrop-filter`
-- Fallback: solid background colors
-
-### Mobile Menu Not Opening
-- Check JavaScript console for errors
-- Verify mobile-menu-toggle ID exists
-- Test on actual mobile device, not just resize
-
-## 📊 Browser Support
-
-| Browser | Version | Support |
-|---------|---------|---------|
-| Chrome  | 90+     | ✅ Full |
-| Firefox | 88+     | ✅ Full |
-| Safari  | 14+     | ✅ Full |
-| Edge    | 90+     | ✅ Full |
-| IE      | Any     | ❌ Not supported |
-
-## 🔗 Resources
-
-### Documentation
-- [DESIGN_DOCUMENTATION.md](./DESIGN_DOCUMENTATION.md) - Complete design guide
-- [GSAP Documentation](https://greensock.com/docs/) - Animation library
-- [CSS Glassmorphism](https://css.glass/) - Glass effect generator
-
-### Asset Sources
-- [Pexels Videos](https://www.pexels.com/videos/) - Free videos
-- [Unsplash](https://unsplash.com/) - Free images
-- [Google Fonts](https://fonts.google.com/) - Web fonts
-
-### Tools
-- [TinyPNG](https://tinypng.com/) - Image compression
-- [CloudConvert](https://cloudconvert.com/) - Format conversion
-- [CSS Glass Generator](https://css.glass/) - Glassmorphism tool
-
-## 📞 Support
-
-For questions about this redesign:
-1. Review the [DESIGN_DOCUMENTATION.md](./DESIGN_DOCUMENTATION.md)
-2. Check browser console for errors
-3. Verify all assets are properly placed
-
-## 📝 License
-
-This redesign concept is created for IT Chic Travels. All rights reserved.
-
-## 🎉 Next Steps
-
-1. ✅ Review the design documentation
-2. ⬇️ Download required video and image assets
-3. 🎨 Customize colors and content to match brand
-4. 🧪 Test on multiple devices and browsers
-5. 🚀 Deploy to production server
-6. 📈 Monitor analytics and user engagement
+- Replace placeholder images with real scenepack art
+- Add real download URLs for each pack
+- Add a live form backend for the waitlist
 
 ---
 
-**Version**: 2.0  
-**Created**: February 2026  
-**Status**: Ready for Implementation  
+**Notes:**
 
-**Design Philosophy**: *"Luxury Storyteller"* - Premium, emotionally evocative, and energetic.
+- Branding in the site has been updated to "Slutify" across core prototype pages.
+- If you want other project READMEs consolidated or preserved (for example the IT Chic Travels redesign), tell me and I will merge them into a separate folder.
 
----
+**Version:** 1.0
 
-### Quick Asset Checklist
+**Created:** July 2026
 
-Before going live, ensure you have:
-- [ ] 4 hero videos (MP4, 1920x1080)
-- [ ] 7 destination/service images (JPEG/WebP, 1920x1080+)
-- [ ] 3 testimonial avatars (JPEG, 400x400)
-- [ ] 1 logo file (SVG, transparent)
-- [ ] All content updated (dates, descriptions, contact info)
-- [ ] Tested on mobile, tablet, and desktop
-- [ ] Performance optimized (images compressed, videos under 5MB)
-
-**Ready to launch your premium travel experience! ✈️🌍**
