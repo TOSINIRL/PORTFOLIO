@@ -395,7 +395,7 @@
         const logs = [
             'Analyzing viewport dynamics...',
             'Optimizing luxury delivery paths...',
-            'Agent Tosin: Status Nominal.',
+            'Agent Slutify: Status Nominal.',
             'Executing logic-driven design...',
             'Syncing with AI ecosystem...',
             'Bespoke experience initiated.',

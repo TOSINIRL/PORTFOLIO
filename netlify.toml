@@ -1,5 +1,5 @@
 [build]
-  publish = "src"
+  publish = "irlmedia-site"
 
 [[redirects]]
   from = "http/*"
