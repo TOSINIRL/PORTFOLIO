@@ -1,5 +1,5 @@
 [build]
-  publish = "irlmedia-site"
+  publish = "Celestial-Scenepacks"
 
 [[redirects]]
   from = "http/*"
