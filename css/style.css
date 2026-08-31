@@ -1590,4 +1590,22 @@ button {
   border-color: #f59e0b;
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
   transform: translateY(-1px);
-}
+}.search-input-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 800px; /* Increased from 600px to make it wider */
+    }
+
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 1.1rem 3rem 1.1rem 3.2rem; /* Increased padding for a taller, bulkier look */
+      font-size: 1.2rem; /* Increased text size from 1rem */
+      font-weight: bold;
+      border: 2px solid #007acc;
+      border-radius: 35px; /* Slightly more rounded to match the larger size */
+      outline: none;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 122, 204, 0.12);
+      transition: all 0.2s ease;
+    }
