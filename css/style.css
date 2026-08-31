@@ -1579,4 +1579,15 @@ button {
 .submit-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}/* ===== CUSTOM SEARCH BAR - LUXURY GOLD ===== */
+.custom-search-wrap {
+  background: #1a1714;
+  border: 1px solid #78350f;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-search-wrap:focus-within {
+  border-color: #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+  transform: translateY(-1px);
 }
